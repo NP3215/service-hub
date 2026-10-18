@@ -8,7 +8,14 @@ const userRoutes = require("../src/routes/userRoutes");
 
 const app = express();
 
-app.use(cors());
+// ALLOWED_ORIGINS (opsional, pisahkan dengan koma), contoh:
+//   https://servicehub3215.web.app,https://servicehub3215.firebaseapp.com
+// Jika tidak diisi (mis. saat development lokal), semua origin diizinkan.
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim()).filter(Boolean)
+  : null;
+
+app.use(cors(allowedOrigins ? { origin: allowedOrigins } : undefined));
 app.use(express.json());
 
 app.use("/api/workshops", workshopRoutes);
